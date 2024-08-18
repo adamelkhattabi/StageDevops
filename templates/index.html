@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joueurs Olympiques Marocains</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: white;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Joueurs Olympiques Marocains - Paris</h1>
+        <button @click="loadPlayers">Afficher les joueurs</button>
+        <ul v-if="players.length">
+            <li v-for="player in players" :key="player.id">
+                {% raw %}
+                <strong>{{ player.name }}</strong> - {{ player.position }} - {{ player.age }} ans
+                {% endraw %}
+            </li>
+        </ul>
+        <p v-else-if="loading">Chargement des joueurs...</p>
+        <p v-else>Cliquez sur le bouton pour afficher les joueurs.</p>
+    </div>
+
+    <script>
+    new Vue({
+        el: '#app',
+        data: {
+            players: [],
+            loading: false
+        },
+        methods: {
+            loadPlayers() {
+                this.loading = true;
+                axios.get('/api/players')
+                    .then(response => {
+                        this.players = response.data;
+                        this.loading = false;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching players:', error);
+                        this.loading = false;
+                    });
+            }
+        }
+    });
+    </script>
+</body>
+</html>

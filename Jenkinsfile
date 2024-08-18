@@ -2,6 +2,12 @@ pipeline {
     agent any
     
     stages {
+      stage('Check Environment') {
+            steps {
+                sh 'docker --version'
+                sh 'docker-compose --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 checkout scm

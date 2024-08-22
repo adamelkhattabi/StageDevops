@@ -2,6 +2,7 @@ version: '3.8'
 services:
   web:
     build: .
+    image: adamelkt/player-app:latest
     ports:
       - "5000:5000"
     environment:
@@ -10,11 +11,9 @@ services:
       - POSTGRES_PASSWORD=aze123
       - POSTGRES_DB=playersdb
     depends_on:
-      - db
-    command: ["./wait-for-it.sh", "db", "5432", "--", "python", "app.py"]
+         - db
     networks:
-      - myapp-network
-
+         - myapp-network
 
   db:
     image: postgres:13-alpine
@@ -27,46 +26,9 @@ services:
     networks:
       - myapp-network
 
-  prometheus:
-    image: prom/prometheus:v2.30.3
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9091:9090"
-    networks:
-      - myapp-network
-
-  grafana:
-    image: grafana/grafana:8.2.0
-    ports:
-      - "3001:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=your_grafana_password
-    volumes:
-      - grafana_data:/var/lib/grafana
-    networks:
-      - myapp-network
-
-  jenkins:
-    build:
-      context: .
-      dockerfile: Dockerfile.jenkins
-    privileged: true
-    user: root
-    ports:
-      - 8080:8080
-      - 50000:50000
-    volumes:
-      - jenkins_home:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - myapp-network
-
-volumes:
-  postgres_data:
-  grafana_data:
-  jenkins_home:
-
 networks:
   myapp-network:
     driver: bridge
+
+volumes:
+  postgres_data:

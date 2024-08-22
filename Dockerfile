@@ -1,30 +1,20 @@
 FROM python:3.9-slim-buster
 
-# Install PostgreSQL client and create a non-root user
-RUN apt-get update && apt-get install -y postgresql-client && \
-    useradd -m myuser
+    RUN apt-get update && apt-get install -y postgresql-client && \
+        useradd -m myuser
 
-# Set up the working directory
-WORKDIR /app
+    WORKDIR /app
 
-# Copy the requirements file
-COPY requirements.txt .
+    COPY requirements.txt .
+    RUN python -m venv /app/venv
+    ENV PATH="/app/venv/bin:$PATH"
+    RUN pip install --no-cache-dir -r requirements.txt
+    RUN pip install pytest requests  # Add this line
 
-# Create and activate virtual environment
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
+    COPY . .
+    RUN chmod +x wait-for-it.sh
+    RUN chown -R myuser:myuser /app
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+    USER myuser
 
-# Copy the rest of the application code
-COPY . .
-
-# Change ownership of the app directory to the non-root user
-RUN chown -R myuser:myuser /app
-
-# Switch to the non-root user
-USER myuser
-
-# Run the application
-CMD ["./wait-for-it.sh", "db", "5432", "--", "python", "app.py"]
+    CMD ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]

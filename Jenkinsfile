@@ -2,12 +2,13 @@ pipeline {
     agent any
     
     stages {
-      stage('Check Environment') {
+        stage('Check Environment') {
             steps {
                 sh 'docker --version'
                 sh 'docker-compose --version'
             }
         }
+        
         stage('Checkout') {
             steps {
                 checkout scm
@@ -22,7 +23,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                sh 'docker-compose run --rm web python -m pytest tests/'
+                sh 'docker-compose run --rm web /app/venv/bin/python -m pytest tests/'
             }
         }
         
@@ -36,6 +37,7 @@ pipeline {
     post {
         always {
             sh 'docker-compose down'
+            cleanWs()
         }
     }
 }

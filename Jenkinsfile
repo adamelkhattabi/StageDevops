@@ -29,6 +29,7 @@ pipeline {
         
         stage('Deploy') {
             steps {
+                sh 'docker-compose down'  // Stop existing containers
                 sh 'docker-compose up -d'
             }
         }

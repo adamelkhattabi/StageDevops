@@ -35,7 +35,10 @@ def get_players():
         } for player in players
     ])
 
-if __name__ == '__main__':
+def init_db():
     with app.app_context():
         db.create_all()
+
+if __name__ == '__main__':
+    init_db()
     app.run(host='0.0.0.0', debug=True)

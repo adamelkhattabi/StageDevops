@@ -6,8 +6,6 @@ RUN apt-get update && apt-get install -y postgresql-client && \
 WORKDIR /app
 
 COPY requirements.txt .
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
 RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install pytest requests
 

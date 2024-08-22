@@ -3,19 +3,16 @@ services:
   web:
     build: .
     image: adamelkt/player-app:latest
+    volumes:
+      - .:/app
     ports:
       - "5000:5000"
     environment:
       - DATABASE_URL=postgresql://postgres:aze123@db/playersdb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=aze123
-      - POSTGRES_DB=playersdb
     depends_on:
       - db
     networks:
       - myapp-network
-    volumes:
-      - .:/app  # Add this line to mount your local directory
 
   db:
     image: postgres:13-alpine

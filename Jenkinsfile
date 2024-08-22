@@ -23,7 +23,7 @@ pipeline {
         
         stage('Test') {
             steps {
-                sh 'docker-compose run --rm web /app/venv/bin/python -m pytest tests/'
+                sh 'docker-compose run --rm web python -m pytest tests/'
             }
         }
         

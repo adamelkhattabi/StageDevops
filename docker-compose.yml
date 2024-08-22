@@ -11,9 +11,11 @@ services:
       - POSTGRES_PASSWORD=aze123
       - POSTGRES_DB=playersdb
     depends_on:
-         - db
+      - db
     networks:
-         - myapp-network
+      - myapp-network
+    volumes:
+      - .:/app  # Add this line to mount your local directory
 
   db:
     image: postgres:13-alpine

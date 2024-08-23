@@ -4,7 +4,7 @@ services:
     build: .
     image: adamelkt/player-app:latest
     ports:
-      - "5001:5000"  # Changed from 5000:5000
+      - "5001:5001"  # Changed from 5000:5000
     environment:
       - DATABASE_URL=postgresql://postgres:aze123@db/playersdb
     depends_on:

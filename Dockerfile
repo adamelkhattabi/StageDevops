@@ -6,8 +6,9 @@ RUN apt-get update && apt-get install -y postgresql-client && \
 WORKDIR /app
 
 COPY requirements.txt .
+RUN cat requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install pytest requests
+RUN pip list
 
 COPY . .
 RUN chmod +x wait-for-it.sh

@@ -35,9 +35,6 @@ def get_players():
         } for player in players
     ])
 
-@metrics.gauge('players_count', 'Number of players in the database')
-def player_count():
-    return Player.query.count()
 
 def init_db():
     with app.app_context():
@@ -45,4 +42,4 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5000)

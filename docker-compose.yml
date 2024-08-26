@@ -3,8 +3,10 @@ services:
   web:
     build: .
     image: adamelkt/player-app:latest
+    deploy:
+      replicas: 1
     ports:
-      - "5001:5001"  # Changed from 5000:5000
+      - "5000-5010:5000"
     environment:
       - DATABASE_URL=postgresql://postgres:aze123@db/playersdb
     depends_on:

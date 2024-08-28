@@ -1,0 +1,29 @@
+groups:
+- name: app_alerts
+  rules:
+  - alert: FlaskAppDown
+    expr: vector(1) # Cette expression sera toujours vraie
+    for: 0m # Se déclenche immédiatement
+    labels:
+      severity: critical
+    annotations:
+      summary: "Flask application is down"
+      description: "This is a test alert for AlertManager."
+
+  - alert: HighResponseTime
+    expr: histogram_quantile(0.95, rate(flask_http_request_duration_seconds_bucket[5m])) > 2
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High response time"
+      description: "95th percentile of response times is above 2 seconds for more than 5 minutes."
+
+  - alert: HighErrorRate
+    expr: rate(flask_http_request_total{status=~"5.."}[5m]) / rate(flask_http_request_total[5m]) > 0.05
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High error rate"
+      description: "Error rate is above 5% for more than 5 minutes."

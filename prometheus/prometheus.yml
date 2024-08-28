@@ -7,4 +7,13 @@ scrape_configs:
       - targets: ['localhost:9090']
   - job_name: 'flask_app'
     static_configs:
-      - targets: ['localhost:5000']
+      - targets: ['localhost:8000']  # Targeting the Flask app on port 8000
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - localhost:9093
+
+rule_files:
+  - "alert_rules.yml"
